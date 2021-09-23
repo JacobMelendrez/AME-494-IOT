@@ -1,0 +1,10 @@
+table, th, td {
+    border:1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1, h2, h3, p {
+    text-align: center;
+    background-color: maroon;
+}
