@@ -2,6 +2,12 @@
 
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
+#include <WebSocketsClient.h>
+#include <WiFiMulti.h>
+
+WiFiMulti WiFiMulti;
+WebSocketsClient webSocket;
 
 
 #define LILYGO_WATCH_2019_WITH_TOUCH 
@@ -10,12 +16,16 @@ TTGOClass *watch;
 TFT_eSPI *tft;
 BMA *sensor;
 
+#include <Wire.h>
 
-const char* ssid = "AMEIoT";
-const char* password = "ameclass";
+
+const char* ssid = "Im a virus";
+const char* password = "feionyy88";
+
+String mac_address;
 
 //Your Domain name with URL path or IP address with path
-const char* serverName = "http://192.168.2.14:3000/sendData";
+//const char* serverName = "http://54.221.132.92:3000/sendData";
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -26,6 +36,52 @@ unsigned long lastTime = 0;
 unsigned long timerDelay = 10;
 
 String response;
+
+void hexdump(const void *mem, uint32_t len, uint8_t cols = 16) {
+  const uint8_t* src = (const uint8_t*) mem;
+  Serial.printf("\n[HEXDUMP] Address: 0x%08X len: 0x%X (%d)", (ptrdiff_t)src, len, len);
+  for(uint32_t i = 0; i < len; i++) {
+    if(i % cols == 0) {
+      Serial.printf("\n[0x%08X] 0x%08X: ", (ptrdiff_t)src, i);
+    }
+    Serial.printf("%02X ", *src);
+    src++;
+  }
+  Serial.printf("\n");
+}
+
+void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
+  switch(type) {
+    case WStype_DISCONNECTED:
+      Serial.printf("[WSc] Disconnected!\n");
+      break;
+    case WStype_CONNECTED:
+      Serial.printf("[WSc] Connected to url: %s\n", payload);
+
+      // send message to server when Connected
+      webSocket.sendTXT("Connected");
+      break;
+    case WStype_TEXT:
+      Serial.printf("[WSc] get text: %s\n", payload);
+
+      // send message to server
+      // webSocket.sendTXT("message here");
+      break;
+    case WStype_BIN:
+      Serial.printf("[WSc] get binary length: %u\n", length);
+      hexdump(payload, length);
+
+      // send data to server
+      // webSocket.sendBIN(payload, length);
+      break;
+    case WStype_ERROR:      
+    case WStype_FRAGMENT_TEXT_START:
+    case WStype_FRAGMENT_BIN_START:
+    case WStype_FRAGMENT:
+    case WStype_FRAGMENT_FIN:
+      break;
+  }
+}
 
 void setup() {
   Serial.begin(115200);
@@ -116,10 +172,26 @@ void setup() {
  
   Serial.println("Timer set to 5 seconds (timerDelay variable), it will take 5 seconds before publishing the first reading.");
 
+  mac_address = WiFi.macAddress();
+  mac_address = "test";
+  delay(500);
+  // server address, port and URL
+  webSocket.begin("54.221.132.92", 3000, "/");
 
+  // event handler
+  webSocket.onEvent(webSocketEvent);
+
+  // use HTTP Basic Authorization this is optional remove if not needed
+  // webSocket.setAuthorization("user", "Password");
+
+  // try ever 5000 again if connection has failed
+  webSocket.setReconnectInterval(5000);
+
+    webSocket.sendTXT(String(millis()).c_str());
 }
 
 void loop() {
+  webSocket.loop();
  if ((millis() - lastTime) > timerDelay) {
     //Check WiFi connection status
     if(WiFi.status()== WL_CONNECTED){
@@ -140,11 +212,13 @@ void loop() {
       int x = acc.x;
       int y = acc.y;
       int z = acc.z;
-      String url = String(serverName) + "?x=" + x + "&y=" + y + "&z=" + z; 
+      /*String url = String(serverName) + "?x=" + x + "&y=" + y + "&z=" + z; 
       Serial.println(url);       
       response = httpGETRequest(url.c_str());
-      Serial.println(response);
+      Serial.println(response);*/
 
+      String url = "{\"id\": \"" + mac_address + "\",\"x\":" + x + ",\"y\":" + y + ",\"z\":" + z + "}"; 
+      webSocket.sendTXT(url.c_str());
 
       
 
