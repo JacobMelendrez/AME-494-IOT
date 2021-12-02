@@ -72,9 +72,9 @@ function start(){
 
 	}
 	loadFile(url, callback);
+	var interval=document.getElementById("duration");
 
-
-	setInterval("getDataFromServer()", value);
+	setInterval("getDataFromServer()", interval[i].value);
 }
 
 
