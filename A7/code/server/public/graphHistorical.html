@@ -15,7 +15,7 @@ function getDataFromServer()
 {
 	
 	var interval=document.getElementById("duration");
-	
+	var avgT=0;
 	
 	var url = "./getLatest"
 
@@ -31,13 +31,14 @@ function getDataFromServer()
 				columns[2].push(obj[i].h || 0);
 				lastAddedTS = timestamp;
 			}
-			//avgT=avgT+1;
+			avgT=avgT+1;
 		}}
 
 		chart.flow({
   		columns: columns
 		});
 	}
+	document.getElementById("avg").innerHTML="Average Temp. is = "+avgT;
 	loadFile(url, callback);
 
 	
@@ -48,8 +49,6 @@ function getTSInFormat(t)
 	return x.getFullYear() + "-" + (x.getMonth()+1) + "-" + x.getDate() + "T" + x.getHours() + ":" + x.getMinutes() + ":" + x.getSeconds();
 }
 function start(){
-	var avgT=0;
-
 	flatpickr("#datetimeSelect", { enableTime: true,
     dateFormat: "Y-m-d H:i"});
 
@@ -63,7 +62,6 @@ function start(){
 			columns[1].push(obj[i].t || 0);
 			columns[2].push(obj[i].h || 0);
 			lastAddedTS = timestamp;
-			avgT=avgT+1;
 		}
 		chart = c3.generate({
     	bindto: '#data',
@@ -85,7 +83,6 @@ function start(){
 
 	}
 	loadFile(url, callback);
-	document.getElementById("avg").innerHTML="Average Temp. is = "+avgT;
 
 	setInterval("getDataFromServer()", 1000);
 }
