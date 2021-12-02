@@ -22,7 +22,7 @@ function getDataFromServer()
 	var callback = function(data){
 		var obj = JSON.parse(data);
 		var columns = [["x"],["Temperature"],["Humidity"]]
-		if(interval.value==30){
+		if(interval.value==10){
 		for(var i = 0; i < obj.length && i<10; i++){
 			var timestamp = parseInt(obj[i].time);
 			if(timestamp > lastAddedTS){
@@ -30,8 +30,8 @@ function getDataFromServer()
 				columns[1].push(obj[i].t || 0);
 				columns[2].push(obj[i].h || 0);
 				lastAddedTS = timestamp;
-				avgT=avgT+i;
 			}
+			avgT=avgT+1;
 		}}
 
 		chart.flow({
