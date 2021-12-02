@@ -14,6 +14,7 @@ var lastAddedTS = 0;
 function getDataFromServer()
 {
 	var interval=document.getElementById("duration");
+	var avgT=0;
 	
 	var url = "./getLatest"
 
@@ -28,6 +29,7 @@ function getDataFromServer()
 				columns[1].push(obj[i].t || 0);
 				columns[2].push(obj[i].h || 0);
 				lastAddedTS = timestamp;
+				avgT=avgT+obj[i].t;
 			}
 		}}
 
@@ -37,7 +39,7 @@ function getDataFromServer()
 	}
 	loadFile(url, callback);
 
-	document.getElementById("avg").innerHTML="Average Temp. is = "+interval.value;
+	document.getElementById("avg").innerHTML="Average Temp. is = "+avgT;
 }
 function getTSInFormat(t)
 {
