@@ -61,7 +61,10 @@ function updateData(){
 	}
 	loadFile(url, callback);
 
-	avgT.innerText=("Avg. Temp "+avgTemp);
+
+var length=obj.length;
+	overallTemp=(avgTemp/length);
+	avgT.innerText=("Avg. Temp "+overallTemp);
 	
 	//setInterval("getDataFromServer()", 1000);
 }
