@@ -74,7 +74,7 @@ function start(){
 	loadFile(url, callback);
 	var interval=document.getElementById("duration");
 
-	setInterval("getDataFromServer()", interval[i].value);
+	setInterval("getDataFromServer()", interval[i].value*1000);
 }
 
 
