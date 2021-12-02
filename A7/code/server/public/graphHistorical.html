@@ -22,6 +22,7 @@ function start(){
 }
 
 function updateData(){
+
   var from = 0;
   var to = new Date(document.getElementById("datetimeSelect").value).getTime();
   from=(to-(parseInt(document.getElementById("duration").value)*60000))
@@ -57,7 +58,8 @@ function updateData(){
 	}
 	loadFile(url, callback);
 
-
+	document.getElementById("avgT").innerHTML="Average Temp";
+	
 	//setInterval("getDataFromServer()", 1000);
 }
 
@@ -74,6 +76,7 @@ function updateData(){
 		<option value='30'> last 30 mins </option>
 		<option value='60'> last hour </option>
 	</select>
+	<div id="avgT"></div>
 	<div id='data'></div>
 
 </body>
