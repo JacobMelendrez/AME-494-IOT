@@ -14,7 +14,7 @@ var lastAddedTS = 0;
 function getDataFromServer()
 {
 	var interval=document.getElementById("duration");
-	var avgT;
+	var avgT=0;
 	
 	var url = "./getLatest"
 
@@ -22,14 +22,14 @@ function getDataFromServer()
 		var obj = JSON.parse(data);
 		var columns = [["x"],["Temperature"],["Humidity"]]
 		if(interval.value==10){
-		for(var i = 0; i < obj.length; i++){
+		for(var i = 0; i < obj.length && i<10; i++){
 			var timestamp = parseInt(obj[i].time);
 			if(timestamp > lastAddedTS){
 				columns[0].push(getTSInFormat(timestamp));
 				columns[1].push(obj[i].t || 0);
 				columns[2].push(obj[i].h || 0);
 				lastAddedTS = timestamp;
-				avgT=avgT+columns[1][i].t;
+				avgT=avgT+obj[i].t;
 			}
 		}}
 
