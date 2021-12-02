@@ -56,15 +56,15 @@ function updateData(){
         }
     	}
 		});
-
+		var length=obj.length;
+		overallTemp=(avgTemp/length);
+		avgT.innerText=("Avg. Temp "+overallTemp);
 
 	}
 	loadFile(url, callback);
 
 
-var length=obj.length;
-	overallTemp=(avgTemp/length);
-	avgT.innerText=("Avg. Temp "+overallTemp);
+	
 	
 	//setInterval("getDataFromServer()", 1000);
 }
