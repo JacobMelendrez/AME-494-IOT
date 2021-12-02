@@ -61,7 +61,7 @@ function updateData(){
 	}
 	loadFile(url, callback);
 
-	document.getElementById("avgT").innerHTML="Average Temp" + avgTemp;
+	avgT.innerText=("Avg. Temp "+avgTemp);
 	
 	//setInterval("getDataFromServer()", 1000);
 }
@@ -79,7 +79,7 @@ function updateData(){
 		<option value='30'> last 30 mins </option>
 		<option value='60'> last hour </option>
 	</select>
-	<div id="avgT"></div>
+	<h3 id="avgT"></h3>
 	<div id='data'></div>
 
 </body>
