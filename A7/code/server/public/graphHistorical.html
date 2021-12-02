@@ -27,6 +27,8 @@ function updateData(){
   var to = new Date(document.getElementById("datetimeSelect").value).getTime();
   from=(to-(parseInt(document.getElementById("duration").value)*60000))
 	var url = "./getData?from=" + from + "&to=" + to;
+	var avgTemp=0;
+
 	var callback = function(data){
 		var obj = JSON.parse(data);
 		var columns = [["x"],["Temperature"],["Humidity"]]
@@ -36,6 +38,7 @@ function updateData(){
 			columns[1].push(obj[i].t || 0);
 			columns[2].push(obj[i].h || 0);
 			lastAddedTS = timestamp;
+			avgTemp+=obj[i].t;
 		}
 		var chart = c3.generate({
     	bindto: '#data',
