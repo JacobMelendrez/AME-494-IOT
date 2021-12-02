@@ -13,8 +13,9 @@ var lastAddedTS = 0;
 
 function getDataFromServer()
 {
+	var args = data.split(" ");
 	var interval=document.getElementById("duration");
-	var avgT=0;
+	var avgT=parseFloat(args[0]);
 	
 	var url = "./getLatest"
 
@@ -29,7 +30,7 @@ function getDataFromServer()
 				columns[1].push(obj[i].t || 0);
 				columns[2].push(obj[i].h || 0);
 				lastAddedTS = timestamp;
-				avgT=avgT+columns[1].pull(obj[i].t || 0);
+				avgT=avgT;
 			}
 		}}
 
