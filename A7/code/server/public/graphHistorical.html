@@ -49,7 +49,7 @@ function getTSInFormat(t)
 }
 function start(){
 	var avgT=0;
-	
+
 	flatpickr("#datetimeSelect", { enableTime: true,
     dateFormat: "Y-m-d H:i"});
 
@@ -63,6 +63,7 @@ function start(){
 			columns[1].push(obj[i].t || 0);
 			columns[2].push(obj[i].h || 0);
 			lastAddedTS = timestamp;
+			avgT=avgT+1;
 		}
 		chart = c3.generate({
     	bindto: '#data',
