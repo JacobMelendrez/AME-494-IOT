@@ -23,7 +23,7 @@ function start(){
 
 function updateData(){
   var from = 0;
-  var to = new Date(doc.getElementById("datetimeSelect").value).getTime();
+  var to = new Date(document.getElementById("datetimeSelect").value).getTime();
   from=(to-(parseInt(document.getElementById("duration").value)*60000))
 	var url = "./getData?from=" + from + "&to=" + to;
 	var callback = function(data){
