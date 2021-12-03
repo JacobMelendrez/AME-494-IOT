@@ -59,10 +59,10 @@ function updateData(){
     	}
 		});
 		var length=obj.length;
-		var overallTemp=parseFloat(sumTemp/length);
-		var overallHum=parseFloat(sumH/length);
+		var overallTemp=(sumTemp/length);
+		var overallHum=(sumH/length);
 		avgT.innerText=("Avg. Temp "+overallTemp.toFixed(2));
-		avgH.innerText=("Avg. Hum "+overallHum);
+		avgH.innerText=("Avg. Hum "+overallHum.toFixed(2));
 	}
 	loadFile(url, callback);
 	
