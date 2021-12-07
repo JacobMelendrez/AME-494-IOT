@@ -29,6 +29,8 @@ function updateData(){
 	var url = "./getData?from=" + from + "&to=" + to;
 	var sumTemp=0;
 	var sumH=0;
+	var maxT=maxH=0;
+	var minT=minH=1000;
 
 	var callback = function(data){
 		var obj = JSON.parse(data);
@@ -41,6 +43,11 @@ function updateData(){
 			lastAddedTS = timestamp;
 			sumTemp += obj[i].t;
 			sumH += obj[i].h; 
+
+			if(maxT<obj[i].t) maxT=obj[i].t;
+			if(maxH<obj[i].h) maxH=obj[i].h;
+			if(minT>obj[i].t) minT=obj[i].t;
+			if(minH>obj[i].h) minH=obj[i].h;
 		}
 		var chart = c3.generate({
     	bindto: '#data',
@@ -63,6 +70,8 @@ function updateData(){
 		var overallHum=(sumH/length);
 		avgT.innerText=("Avg. Temp "+overallTemp.toFixed(2));
 		avgH.innerText=("Avg. Hum "+overallHum.toFixed(2));
+		max.innerText=("Max Temp.= "+maxT+" Max Hum.= "+maxH);
+		min.innerText=("Min Temp.= "+minT+" Min Hum.= "+minH);
 	}
 	loadFile(url, callback);
 	
@@ -84,6 +93,8 @@ function updateData(){
 	</select>
 	<h3 id="avgT"></h3>
 	<h3 id="avgH"></h3>
+	<h3 id="max"></h3>
+	<h3 id="min"></h3>
 	<div id='data'></div>
 
 </body>
